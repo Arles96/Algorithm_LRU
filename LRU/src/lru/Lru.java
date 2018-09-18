@@ -66,22 +66,28 @@ public class Lru {
     // Metodos de administracion
     
     public void check (int x) {
-        if (counter < size ) {
+        if (this.counter == 0 ) {
             this.array[counter] = x;
             this.counter++;
             this.miss++;
         } else {
             boolean exists = false;
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < this.array.length; i++) {
                 if (this.array[i] == x) {
                     exists = true;
                     break;
                 }
             }
             if (!exists) {
-                this.array[this.indexDead] = x;
-                this.indexDead = (this.indexDead + 1) % size;
-                this.miss++;
+                if (this.counter < size) {
+                    this.array[this.counter] = x;
+                    this.counter++;
+                    this.miss++;
+                } else {
+                    this.array[this.indexDead] = x;
+                    this.indexDead = (this.indexDead + 1) % size;
+                    this.miss++;
+                }
             } else {
                 this.indexDead = (this.indexDead + 1) % size;
                 this.hits++;
